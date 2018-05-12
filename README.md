@@ -96,3 +96,7 @@ Bayesian Belief Propagation), Components.C (connected components), BellmanFord.C
 SPMV.C (Sparse Matrix-vector Mulplication,need weighted graph).
 
 
+Resources
+Sun, Jiawen, Hans Vandierendonck, and Dimitrios S. Nikolopoulos. "GraphGrind: addressing load imbalance of graph partitioning." Proceedings of the International Conference on Supercomputing. ACM, 2017.
+Sun, Jiawen, Hans Vandierendonck, and Dimitrios S. Nikolopoulos. "Accelerating Graph Analytics by Utilising the Memory Locality of Graph Partitioning." Parallel Processing (ICPP), 2017 46th International Conference on. IEEE, 2017.
+

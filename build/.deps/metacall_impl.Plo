@@ -1,0 +1,39 @@
+metacall_impl.lo: ../../../intel-cilk-runtime/runtime/metacall_impl.c \
+  ../../../intel-cilk-runtime/runtime/metacall_impl.h \
+  ../../../intel-cilk-runtime/runtime/rts-common.h \
+  ../../../intel-cilk-runtime/include/internal/metacall.h \
+  ../../../intel-cilk-runtime/include/cilk/common.h \
+  /usr/include/assert.h /usr/include/features.h \
+  /usr/include/stdc-predef.h /usr/include/sys/cdefs.h \
+  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
+  /usr/include/gnu/stubs-64.h \
+  /home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stdint.h \
+  /usr/include/stdint.h /usr/include/bits/wchar.h
+
+../../../intel-cilk-runtime/runtime/metacall_impl.h:
+
+../../../intel-cilk-runtime/runtime/rts-common.h:
+
+../../../intel-cilk-runtime/include/internal/metacall.h:
+
+../../../intel-cilk-runtime/include/cilk/common.h:
+
+/usr/include/assert.h:
+
+/usr/include/features.h:
+
+/usr/include/stdc-predef.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-64.h:
+
+/home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stdint.h:
+
+/usr/include/stdint.h:
+
+/usr/include/bits/wchar.h:

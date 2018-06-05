@@ -112,13 +112,13 @@ void Compute (GraphType &GA, long start)
     const int perNode = part.get_num_per_node_partitions();
     mmap_ptr<intT> ShortestPathLen;
     ShortestPathLen.part_allocate (part);
-    loop(j,part,perNode,ShortestPathLen[j] = INT_MAX/2);
+    map_vertexL(part,[&](intT j){ShortestPathLen[j] = INT_MAX/2;});
     ShortestPathLen[start] = 0;
   
     mmap_ptr<intT> Visited;
     Visited.part_allocate (part);
 
-    loop(j,part,perNode,Visited[j] = 0);
+    map_vertexL(part,[&](intT j){Visited[j] = 0;});
     //vertexSubset Frontier(n,start); //initial frontier
     partitioned_vertices Frontier=partitioned_vertices::create(n,start,GA.get_partition().V[start].getOutDegree());
 
@@ -129,7 +129,7 @@ void Compute (GraphType &GA, long start)
         {
             //negative weight cycle
             {
-                loop(j,part,perNode,ShortestPathLen[j] = -(INT_MAX/2));
+                map_vertexL(part,[&](intT j){ShortestPathLen[j] = -(INT_MAX/2);});
             }
             break;
         }

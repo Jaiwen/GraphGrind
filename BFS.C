@@ -85,7 +85,7 @@ void Compute(GraphType &GA, long start)
 //creates Parents array, initialized to all -1, except for start
     mmap_ptr<intT> Parents;
     Parents.part_allocate(part);
-    loop(j,part,perNode,Parents[j]=-1);
+    map_vertexL(part, [&](intT j) {Parents[j]=-1;});
 
     Parents[start] = start;
 // creates initial frontier

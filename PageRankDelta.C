@@ -137,9 +137,9 @@ void Compute(GraphType &GA, long start)
     mmap_ptr<double> Delta;
     Delta.part_allocate (part);
     
-    loop(j,part,perNode, p[j]=0.0);
-    loop(j,part,perNode, Delta[j]=one_over_n);
-    loop(j,part,perNode, nghSum[j]=0.0);
+    map_vertexL (part, [&] (intT j) { p[j] = 0.0; } );
+    map_vertexL (part, [&] (intT j) { Delta[j] = one_over_n; } );
+    map_vertexL (part, [&] (intT j) { nghSum[j] = 0.0; } );
 
     partitioned_vertices Frontier = partitioned_vertices::bits(part,n, m);
     partitioned_vertices All = partitioned_vertices::bits(part,n,m);
@@ -157,7 +157,7 @@ void Compute(GraphType &GA, long start)
               vertexFilter(GA,All,PR_Vertex_F(p,Delta,nghSum,damping,epsilon2));
         //compute L1-norm (use nghSum as temp array)
         {
-            loop(j,part,perNode,nghSum[j] = fabs(Delta[j]));
+            map_vertexL (part, [&] (intT j) { nghSum[j] = fabs(Delta[j]); } );
         }
         double L1_norm = sequence::plusReduce(nghSum.get(),n);
         if(L1_norm < epsilon) break;

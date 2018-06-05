@@ -110,7 +110,7 @@ void Compute(GraphType &GA, long start)
     IDs.part_allocate (part);
     mmap_ptr<intT> prevIDs;
     prevIDs.part_allocate (part);
-    loop(j,part,perNode,IDs[j]=j);
+    map_vertexL(part,[&](intT j) {IDs[j]=j;});
     partitioned_vertices Frontier = partitioned_vertices::bits(part,n,m);
 
     while(!Frontier.isEmpty())  //iterate until IDS converge

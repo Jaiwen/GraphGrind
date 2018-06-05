@@ -136,7 +136,8 @@ public:
         pv.bit=false;
         pv.d.part_allocate(part);
         const int perNode = part.get_num_per_node_partitions();
-        loop(j,part,perNode,pv.d[j]=0);
+        //loop(j,part,perNode,pv.d[j]=0);
+        map_vertexL( part, [&](intT j) { pv.d[j]=0; } );
 
         pv.d_m = 0;
         pv.has_dense = true;
@@ -235,7 +236,8 @@ public:
         if (!d)
         {
             d.part_allocate(part);
-            loop(j,part,perNode,d[j]=0);
+           // loop(j,part,perNode,d[j]=0);
+            map_vertexL( part, [&](intT j){ d[j]=0; } );
 	    parallel_for(intT i=0; i<d_m; i++) d[s[i]] = 1;
         }
             has_dense = true;
@@ -954,20 +956,30 @@ partitioned_vertices edgeMap(partitioned_graph<vertex> GA, partitioned_vertices 
       v1 = partitioned_vertices::dense(numVertices,coo_part);
       if (m+TotalOutDegrees > denseThreshold && !GA.part_ver)
       {
-            parallel_for_numa(int i=0; i < num_numa_node; ++i )   //same loop with allocation
+	    map_partitionL( coo_part, [&]( int p ) {
+                        edgeMapDense(GA.get_edge_list_partition(p),Localfrontier.d, Localfrontier.bit, f, v1.d);
+                } );
+#if 0
+            parallel_for/*_numa*/(int i=0; i < num_numa_node; ++i )   //same loop with allocation
             {
                 parallel_for( int p = coo_perNode*i; p < coo_perNode*(i+1); ++p )
                    edgeMapDense(GA.get_edge_list_partition(p),Localfrontier.d, Localfrontier.bit, f, v1.d);
             }
             tmlog( tm_setup, tm_edgemap_dense_ );
+#endif
       }
       else
       {
-            parallel_for_numa( int i=0; i < num_numa_node; ++i )   //same loop with allocation
+	    map_partitionL( csc_part, [&]( int p ) {
+                   edgeMapDenseCSC(WG, Localfrontier.d,Localfrontier.bit,f, v1.d, csc_part.start_of(p), csc_part.start_of(p+1), GA.source);
+                } );
+#if 0
+            parallel_for/*_numa*/( int i=0; i < num_numa_node; ++i )   //same loop with allocation
             {
                 parallel_for( int p = coo_perNode*i; p < coo_perNode*(i+1); ++p )
                    edgeMapDenseCSC(WG, Localfrontier.d,Localfrontier.bit,f, v1.d, csc_part.start_of(p), csc_part.start_of(p+1), GA.source);
             }   
+#endif
        }
         // Calculate statistics on active vertices and their out-degree
            intTpair p = sequence::reduce<intT>((intT)0, (intT)GA.n,
@@ -1018,11 +1030,13 @@ void vertexMap(const partitioner &part, partitioned_vertices V, F add)
     {
         if (V.bit)
         {
-           loop(j,part,perNode,add(j));
+           //loop(j,part,perNode,add(j));
+           map_vertexL( part, [&](intT j){ add(j); } );
         }
 	else
         {
-           loop(j,part,perNode,if (V.d[j]) add(j));
+          // loop(j,part,perNode,if (V.d[j]) add(j));
+           map_vertexL( part, [&](intT j){ if (V.d[j]) add(j); } );
         }
     }
     else
@@ -1048,14 +1062,17 @@ partitioned_vertices vertexFilter(partitioned_graph<vertex> GA, partitioned_vert
     mmap_ptr<bool> d_out;
     d_out.part_allocate(part);
     
-    loop(j,part,perNode,d_out[j]=0);
+    //loop(j,part,perNode,d_out[j]=0);
+    map_vertexL( part, [&](intT j){ d_out[j]=0; } );
     if (V.bit)
     {
-       loop(j,part,perNode,d_out[j]=filter(j));
+       //loop(j,part,perNode,d_out[j]=filter(j));
+       map_vertexL( part, [&](intT j){ d_out[j]=filter(j); } );
     }
     else
     {
-       loop(j,part,perNode,if(V.d[j]) d_out[j]=filter(j));
+       //loop(j,part,perNode,if(V.d[j]) d_out[j]=filter(j));
+       map_vertexL( part, [&](intT j){ if (V.d[j]) d_out[j]=filter(j); } );
     }
 
     intTpair p = sequence::reduce<intT>((intT)0, n, GoutDegree<vertex>(GA.get_partition(),d_out));
@@ -1149,8 +1166,13 @@ int parallel_main(int argc, char* argv[])
     }
     else
     {
+        timer load;
+        double load_t=0;
+        load.start();
+        cerr<<"Loading Graph "<<endl;
         wholeGraph<asymmetricVertex> G =
             readGraph<asymmetricVertex>(iFile,symmetric,binary); //asymmetric graph
+        cerr<<"Loading: "<<tmlog(load,load_t)<<endl;
         partitioned_graph<asymmetricVertex> PG( G, numOfCoo, part_src, part_vertex,relabel);
         if(PG.transposed()) PG.transpose();
 

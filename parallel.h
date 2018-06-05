@@ -31,12 +31,6 @@
 #define parallel_main main
 //#include "cilkview.h"
 #define parallel_for cilk_for
-#if NUMA
-#define parallel_for_numa _Pragma("cilk numa(strict)") cilk_for
-#else
-#define parallel_for_numa cilk_for
-#endif
-
 #define parallel_for_1 _Pragma("cilk_grainsize = 1") cilk_for
 #define parallel_for_256 _Pragma("cilk_grainsize = 256") cilk_for
 
@@ -48,11 +42,6 @@
 //#include "cilkview.h"
 #define parallel_for cilk_for
 #define parallel_main main
-#if NUMA
-#define parallel_for_numa _Pragma("cilk numa(strict)") cilk_for
-#else
-#define parallel_for_numa cilk_for
-#endif
 #define parallel_for_1 _Pragma("cilk grainsize = 1") cilk_for
 #define parallel_for_256 _Pragma("cilk grainsize = 256") cilk_for
 
@@ -73,7 +62,6 @@
 //#define parallel_sort std::sort  
 #define parallel_main main
 #define parallel_for for
-#define parallel_for_numa for
 #define parallel_for_1 for
 #define parallel_for_256 for
 #define cilk_for for

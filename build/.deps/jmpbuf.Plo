@@ -1,0 +1,52 @@
+jmpbuf.lo: ../../../intel-cilk-runtime/runtime/jmpbuf.c \
+  ../../../intel-cilk-runtime/runtime/jmpbuf.h \
+  ../../../intel-cilk-runtime/include/cilk/common.h \
+  /usr/include/assert.h /usr/include/features.h \
+  /usr/include/stdc-predef.h /usr/include/sys/cdefs.h \
+  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
+  /usr/include/gnu/stubs-64.h \
+  /home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stdint.h \
+  /usr/include/stdint.h /usr/include/bits/wchar.h \
+  ../../../intel-cilk-runtime/include/internal/abi.h \
+  /home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stddef.h \
+  ../../../intel-cilk-runtime/runtime/worker_mutex.h \
+  ../../../intel-cilk-runtime/runtime/rts-common.h /usr/include/setjmp.h \
+  /usr/include/bits/setjmp.h /usr/include/bits/sigset.h
+
+../../../intel-cilk-runtime/runtime/jmpbuf.h:
+
+../../../intel-cilk-runtime/include/cilk/common.h:
+
+/usr/include/assert.h:
+
+/usr/include/features.h:
+
+/usr/include/stdc-predef.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-64.h:
+
+/home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stdint.h:
+
+/usr/include/stdint.h:
+
+/usr/include/bits/wchar.h:
+
+../../../intel-cilk-runtime/include/internal/abi.h:
+
+/home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stddef.h:
+
+../../../intel-cilk-runtime/runtime/worker_mutex.h:
+
+../../../intel-cilk-runtime/runtime/rts-common.h:
+
+/usr/include/setjmp.h:
+
+/usr/include/bits/setjmp.h:
+
+/usr/include/bits/sigset.h:

@@ -121,8 +121,9 @@ void Compute(GraphType &GA, long start)
     mmap_ptr<double> p_next;
     p_next.part_allocate (part);
 
-    loop(j,part,perNode,p_curr[j]=one_over_n);
-    loop(j,part,perNode,p_next[j]=0);
+    map_vertexL(part,[&](intT j) {p_curr[j]=one_over_n;});
+    map_vertexL(part,[&](intT j) {p_next[j]=0;});
+
     int count=0;
     partitioned_vertices Frontier = partitioned_vertices::bits(part,n, m);
     while(1 && count<MaxIter)
@@ -132,7 +133,7 @@ void Compute(GraphType &GA, long start)
         vertexMap(part,Frontier,PR_Vertex_F(p_curr,p_next,damping,n));
         //compute L1-norm between p_curr and p_next
         {
-            loop(j,part,perNode,p_curr[j] = fabs(p_curr[j]-p_next[j]));
+            map_vertexL(part,[&] (intT j) {p_curr[j] = fabs(p_curr[j]-p_next[j]);});
         }
 
         double L1_norm = sequence::plusReduce(p_curr.get(),n);

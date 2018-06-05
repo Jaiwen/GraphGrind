@@ -165,9 +165,9 @@ void Compute(GraphType &GA, long start)
     NumPaths.part_allocate (part);
     mmap_ptr<bool> Visited;
     Visited.part_allocate (part);
-    
-    loop(j,part,perNode,NumPaths[j]=0.0);
-    loop(j,part,perNode,Visited[j]=false);
+   
+    map_vertexL(part, [&](intT j) {NumPaths[j]=0.0;});
+    map_vertexL(part, [&](intT j) {Visited[j]=false;});
 
     NumPaths[start] = 1.0;
     Visited[start] = true;
@@ -191,16 +191,16 @@ void Compute(GraphType &GA, long start)
     mmap_ptr<fType> Dependencies;
     Dependencies.part_allocate (part);
     
-    loop(j,part,perNode,Dependencies[j]=0.0);
+    map_vertexL(part,[&] (intT j) {Dependencies[j]=0.0;});
 
     //invert numpaths
     mmap_ptr<fType> inverseNumPaths;
     inverseNumPaths = NumPaths;
-    loop(j,part,perNode,inverseNumPaths[j]=1/inverseNumPaths[j]);
+    map_vertexL(part,[&] (intT j) {inverseNumPaths[j]=1/inverseNumPaths[j];});
 
     Levels[round].del();
     //reuse Visited
-    loop(j,part,perNode, Visited[j]=false);
+    map_vertexL(part,[&] (intT j)  {Visited[j]=false;});
     Frontier = Levels[round-1];
     vertexMap(part,Frontier,BC_Back_Vertex_F(Visited,Dependencies,inverseNumPaths));
 
@@ -219,7 +219,7 @@ void Compute(GraphType &GA, long start)
 
     Frontier.del();
     //Update dependencies scores
-    loop(j,part,perNode, Dependencies[j]=(Dependencies[j]-inverseNumPaths[j])/inverseNumPaths[j]);
+    map_vertexL(part,[&] (intT j) {Dependencies[j]=(Dependencies[j]-inverseNumPaths[j])/inverseNumPaths[j];});
     inverseNumPaths.del(); //free(inverseNumPaths);
     Visited.del(); //free(Visited);
     Dependencies.del(); //free(Dependencies);

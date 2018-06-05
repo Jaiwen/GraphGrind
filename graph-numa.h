@@ -312,15 +312,15 @@ typename std::make_unsigned<T>::type roundUpPow2( T n_u )
     return n;
 }
 
-template <class vertex>
 class PairSort
 {
   intT n;
 public:
    PairSort ( intT n_) : n(n_){ }
-   bool operator () ( const pair<intT,vertex> & i, const pair<intT, vertex> & j ) 
+   bool operator () ( const intT & i, const intT & j ) 
    {
-        return i.second.getInDegree() < j.second.getInDegree();
+        return i>j;
+        //return i.second.getInDegree() < j.second.getInDegree();
    }
 };
 
@@ -645,6 +645,7 @@ public:
           coo_partition(coo_part,GA.n), 
           source(partition_source), part_ver(partition_vertex),part_relabel(partition_relabel)
     {
+        //cerr<<"m="<<m<<"n="<<n<<endl;
         const int coo_perNode = coo_partition.get_num_per_node_partitions();
         localEdgeList = new EdgeList<Edge>[coo_part];
         if(partition_vertex)
@@ -655,12 +656,12 @@ public:
 #if CPU_PARTITION
         coo_partition.compute_vertexstarts();
 #endif
+          timer par;
+          par.start(); 
           if(!partition_vertex){
             cerr<<"edge partitioning...."<<endl;
-            parallel_for_numa( int i=0; i < num_numa_node; ++i )   //same loop with allocation
-            {
-                parallel_for( int p = coo_perNode*i; p < coo_perNode*(i+1); ++p )
-                {
+	    map_partitionL( coo_partition, [&]( int p ) {
+		    int i = p / coo_partition.get_num_per_node_partitions();
                     if( partition_source)
                         localEdgeList[p] = COOPartitionBySour( GA, coo_partition.start_of(p), coo_partition.start_of(p+1),i);
                     else   //Partition Function for ICS and ICPP paper 
@@ -670,9 +671,10 @@ public:
 #else
                         localEdgeList[p].CSR_sort();
 #endif
-                }
-            }        
-         }
+                } );
+	  }
+         cerr<<"COO: "<<par.stop()<<endl;
+        //cerr<<"CSC Chunk"<<endl;
         CSCGraph = PartitionByDest(GA,0,GA.m,coo_part);
         if(partition_vertex)
             cscpartitionByVertex(CSCGraph,coo_part,CSCGraph.csc.as_array(),partition_relabel);
@@ -1120,7 +1122,6 @@ EdgeList<Edge> partitioned_graph<vertex>::COOPartitionByDest(wholeGraph<vertex> 
     intT totalSize = 0;
         for (intT i = rangeLow; i < rangeHi; i++)
               totalSize += V[i].getInDegree();
-
         EdgeList<Edge> el (totalSize,n,numanode);
         long k = 0;
        
@@ -1137,6 +1138,7 @@ EdgeList<Edge> partitioned_graph<vertex>::COOPartitionByDest(wholeGraph<vertex> 
 	    }
          }
     assert( k == totalSize );
+    //cerr<<"VERTER_CHUNCK: "<<rangeHi-rangeLow<<" and EDGE: "<<totalSize<<endl;
     return el;
 }
 
@@ -1219,6 +1221,7 @@ void partitioned_graph<vertex>::cscpartitionByDegree(graph<vertex> GA, int numOf
         if (j<n-1 && GA.CSCV[j+1].second.getInDegree()>GA.CSCV[j].second.getInDegree() && counter<numOfNode-1)
             counter++;
     } 
+    assert( counter+1 == numOfNode );
   }
   else
   {
@@ -1242,10 +1245,10 @@ void partitioned_graph<vertex>::cscpartitionByDegree(graph<vertex> GA, int numOf
     {
         edges[counter]+=degrees[i];
         sizeArr[counter]++;
-        if (edges[counter]>=averageDegree && counter <numOfNode-1)
-        {
+        if (edges[counter]<averageDegree && degrees[i+1]+edges[counter]> 1.1*averageDegree)
             counter++;
-        }
+        if (edges[counter]>=averageDegree && counter <numOfNode-1)
+            counter++;
     }
     assert( counter+1 == numOfNode );
     delete [] degrees;
@@ -1298,10 +1301,11 @@ void partitioned_graph<vertex>::partitionByDegree(wholeGraph<vertex> GA, int num
         if (j<n-1 && GA.V[j+1].getInDegree()>GA.V[j].getInDegree() && counter<numOfNode-1)
             counter++;
     } 
+    assert( counter+1 == numOfNode );
   }
   else{
     cerr<<"Original chunk size..."<<endl;
-    intT *degrees = new intT [n];
+    intT* degrees = new intT [n];
     if (useOutDegree)
     {
         {
@@ -1314,26 +1318,40 @@ void partitioned_graph<vertex>::partitionByDegree(wholeGraph<vertex> GA, int num
             parallel_for(intT i = 0; i < n; i++) degrees[i] = GA.V[i].getInDegree();
         }
     }
-    intT edges[numOfNode];
+    intT * edges= new intT [numOfNode];
     for (int i = 0; i < numOfNode; i++)
     {
         edges[i] = 0;
         sizeArr[i] = 0;
     }
     
-    //intT averageDegree = (GA.m / numOfNode)+1;
     intT averageDegree = GA.m / numOfNode;
+    cerr<<"Average Degree: "<<averageDegree<<endl;
     int counter = 0;
     for (intT i = 0; i < n; i++)
     {
         edges[counter]+=degrees[i];
         sizeArr[counter]++;
-        if (edges[counter]>=averageDegree && counter <numOfNode-1)
-        {
+        if (edges[counter]<averageDegree && degrees[i+1]+edges[counter]> 1.1*averageDegree)
             counter++;
-        }
+        if (edges[counter]>=averageDegree && counter <numOfNode-1)
+            counter++;
     }
+#define PSIZE 0
+#if PSIZE
+     intT a=0,b=0;
+    for (intT i=0; i<numOfNode;i++)
+    {
+        cerr<<" Part " <<i<<" with size "<<sizeArr[i]<<" and edges "<<edges[i]<<endl;
+        a+=edges[i];
+        b+=sizeArr[i];
+    }
+    assert(a==GA.m);
+    assert(b==GA.n);
+    abort();
+#endif
     assert( counter+1 == numOfNode );
     delete [] degrees;
+    delete [] edges;
    }
 }

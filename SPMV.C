@@ -75,8 +75,8 @@ void Compute(GraphType &GA, long start)
     p_curr.part_allocate(part);
     mmap_ptr<double> p_next;
     p_next.part_allocate(part);
-    loop(j,part,perNode,p_curr[j] = one_over_n);
-    loop(j,part,perNode,p_next[j] = 0);
+    map_vertexL(part,[&] (intT j) {p_curr[j] = one_over_n;});
+    map_vertexL(part, [&] (intT j) {p_next[j] = 0;});
     //CAScounter=0;
     partitioned_vertices Frontier = partitioned_vertices::bits(part,n, m);
     partitioned_vertices output = edgeMap(GA, Frontier, SPMV_F<vertex>(p_curr,p_next),m/20);

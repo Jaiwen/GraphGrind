@@ -8,27 +8,31 @@ Compilation
 
 Recommended environment
 
-* Intel icpc compiler (work for NUMA disable, -DNUMA=0, no NUMA characterization)
-* clang++ &gt;= 4.9.0 with support for Cilk+, 
+* Intel icc-14.0.0 compiler
+* c++ &gt;= 6.3.0 with support for Cilk+, 
 
 To compile with g++ using Cilk, define the environment variable
-CILK. To compile with icpc, define the environment variable MKLROOT
-and make sure CILK is not defined.
+CILK. 
  
 ```
 $ make -j 16 
 ```
-
 This is to compile and build with 16 threads in parallel. You can use the
 number of your choice.
 
+Cilk Library repo:
+-----------
+* cilk-swan repo contains the library of cilk_runtime. 
+* Before running apps, export LD_LIBRARY_PATH=your-compiler-path:./cilk-swan/lib:$LD_LIBRARY_PATH
+* USE cilk-swan/libl/libcilkrts.so as cilk_library 
+
 Compiling flags:
 ----------
-* CPU_PARTITION: For Data Array use the cpu load balancing loop. (ICS paper)
-* NUMA: USE special NUMA allocation and task cilk_for_numa for NUMA machine. (ICS paper)
+* NUMA: USE special NUMA allocation and NUMA_aware cilk_for for NUMA machine. (ICS paper)
 * EDGE_HILBERT：USE the hilbert to re-bulid the coo edgelist for` better locality (ICPP)
       		If you want to use COO-CSR sort, define this value equal to 0 in the Makefile.
 * PART96: USE sequential loop (for) within each parallel partition edge traversal, no atomics operation.(ICPP)
+* CILK: USE cilk as parallelism tool.
 Run Examples
 -------
 Example of running the code: An example unweighted graph
@@ -37,7 +41,7 @@ provided. Symmetric graphs should be called with the "-s"
 flag for better performance. For example:
 
 ```
-$ ./BFS -c 384 -r 100 -b graph_input
+$ LD_PRELOAD="./cilk-swan/lib/libcilkrts.so" ./BFS -c 384 -r 100 -v vertex -b graph_input
 ``` 
 
 * "-c" flag followed by an integer to indicate the number of coo partitions.
@@ -95,10 +99,4 @@ Bayesian Belief Propagation), Components.C (connected components), BellmanFord.C
 (Bellman-Ford shortest paths, need weighted graph), PageRank.C, PageRankDelta.C and
 SPMV.C (Sparse Matrix-vector Mulplication,need weighted graph).
 
-
-Resources
----------
-Sun, Jiawen, Hans Vandierendonck, and Dimitrios S. Nikolopoulos. "GraphGrind: addressing load imbalance of graph partitioning." Proceedings of the International Conference on Supercomputing. ACM, 2017.
-
-Sun, Jiawen, Hans Vandierendonck, and Dimitrios S. Nikolopoulos. "Accelerating Graph Analytics by Utilising the Memory Locality of Graph Partitioning." Parallel Processing (ICPP), 2017 46th International Conference on. IEEE, 2017.
 

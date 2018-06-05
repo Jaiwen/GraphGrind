@@ -1,0 +1,175 @@
+os-unix-sysdep.lo: \
+  ../../../intel-cilk-runtime/runtime/config/x86/os-unix-sysdep.c \
+  ../../../intel-cilk-runtime/runtime/os.h \
+  ../../../intel-cilk-runtime/runtime/rts-common.h \
+  ../../../intel-cilk-runtime/include/cilk/common.h \
+  /usr/include/assert.h /usr/include/features.h \
+  /usr/include/stdc-predef.h /usr/include/sys/cdefs.h \
+  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
+  /usr/include/gnu/stubs-64.h \
+  /home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stdint.h \
+  /usr/include/stdint.h /usr/include/bits/wchar.h \
+  ../../../intel-cilk-runtime/runtime/cilk-tbb-interop.h \
+  ../../../intel-cilk-runtime/runtime/cilk_str_mem.h \
+  ../../../intel-cilk-runtime/runtime/sslib/safe_lib.h \
+  ../../../intel-cilk-runtime/runtime/sslib/safe_types.h \
+  /usr/include/stdio.h \
+  /home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stddef.h \
+  /usr/include/bits/types.h /usr/include/bits/typesizes.h \
+  /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+  /home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stdarg.h \
+  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+  /usr/include/bits/stdio.h /usr/include/sys/types.h /usr/include/time.h \
+  /usr/include/endian.h /usr/include/bits/endian.h \
+  /usr/include/bits/byteswap.h /usr/include/bits/byteswap-16.h \
+  /usr/include/sys/select.h /usr/include/bits/select.h \
+  /usr/include/bits/sigset.h /usr/include/bits/time.h \
+  /usr/include/sys/sysmacros.h /usr/include/bits/pthreadtypes.h \
+  /usr/include/inttypes.h /usr/include/errno.h /usr/include/bits/errno.h \
+  /usr/include/linux/errno.h /usr/include/asm/errno.h \
+  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
+  /home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stdbool.h \
+  ../../../intel-cilk-runtime/runtime/sslib/safe_lib_errno.h \
+  ../../../intel-cilk-runtime/runtime/sslib/safe_str_lib.h \
+  ../../../intel-cilk-runtime/runtime/sslib/snprintf_s.h \
+  ../../../intel-cilk-runtime/runtime/config/x86/os-fence.h \
+  ../../../intel-cilk-runtime/runtime/sysdep.h \
+  ../../../intel-cilk-runtime/include/internal/abi.h \
+  ../../../intel-cilk-runtime/runtime/worker_mutex.h \
+  ../../../intel-cilk-runtime/runtime/global_state.h \
+  ../../../intel-cilk-runtime/runtime/frame_malloc.h \
+  ../../../intel-cilk-runtime/runtime/stats.h \
+  ../../../intel-cilk-runtime/runtime/bug.h \
+  ../../../intel-cilk-runtime/runtime/cilk_fiber.h \
+  ../../../intel-cilk-runtime/runtime/spin_mutex.h \
+  ../../../intel-cilk-runtime/runtime/cilk_malloc.h \
+  ../../../intel-cilk-runtime/runtime/full_frame.h \
+  ../../../intel-cilk-runtime/runtime/os_mutex.h
+
+../../../intel-cilk-runtime/runtime/os.h:
+
+../../../intel-cilk-runtime/runtime/rts-common.h:
+
+../../../intel-cilk-runtime/include/cilk/common.h:
+
+/usr/include/assert.h:
+
+/usr/include/features.h:
+
+/usr/include/stdc-predef.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-64.h:
+
+/home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stdint.h:
+
+/usr/include/stdint.h:
+
+/usr/include/bits/wchar.h:
+
+../../../intel-cilk-runtime/runtime/cilk-tbb-interop.h:
+
+../../../intel-cilk-runtime/runtime/cilk_str_mem.h:
+
+../../../intel-cilk-runtime/runtime/sslib/safe_lib.h:
+
+../../../intel-cilk-runtime/runtime/sslib/safe_types.h:
+
+/usr/include/stdio.h:
+
+/home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stddef.h:
+
+/usr/include/bits/types.h:
+
+/usr/include/bits/typesizes.h:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/wchar.h:
+
+/home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stdarg.h:
+
+/usr/include/bits/stdio_lim.h:
+
+/usr/include/bits/sys_errlist.h:
+
+/usr/include/bits/stdio.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/time.h:
+
+/usr/include/endian.h:
+
+/usr/include/bits/endian.h:
+
+/usr/include/bits/byteswap.h:
+
+/usr/include/bits/byteswap-16.h:
+
+/usr/include/sys/select.h:
+
+/usr/include/bits/select.h:
+
+/usr/include/bits/sigset.h:
+
+/usr/include/bits/time.h:
+
+/usr/include/sys/sysmacros.h:
+
+/usr/include/bits/pthreadtypes.h:
+
+/usr/include/inttypes.h:
+
+/usr/include/errno.h:
+
+/usr/include/bits/errno.h:
+
+/usr/include/linux/errno.h:
+
+/usr/include/asm/errno.h:
+
+/usr/include/asm-generic/errno.h:
+
+/usr/include/asm-generic/errno-base.h:
+
+/home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stdbool.h:
+
+../../../intel-cilk-runtime/runtime/sslib/safe_lib_errno.h:
+
+../../../intel-cilk-runtime/runtime/sslib/safe_str_lib.h:
+
+../../../intel-cilk-runtime/runtime/sslib/snprintf_s.h:
+
+../../../intel-cilk-runtime/runtime/config/x86/os-fence.h:
+
+../../../intel-cilk-runtime/runtime/sysdep.h:
+
+../../../intel-cilk-runtime/include/internal/abi.h:
+
+../../../intel-cilk-runtime/runtime/worker_mutex.h:
+
+../../../intel-cilk-runtime/runtime/global_state.h:
+
+../../../intel-cilk-runtime/runtime/frame_malloc.h:
+
+../../../intel-cilk-runtime/runtime/stats.h:
+
+../../../intel-cilk-runtime/runtime/bug.h:
+
+../../../intel-cilk-runtime/runtime/cilk_fiber.h:
+
+../../../intel-cilk-runtime/runtime/spin_mutex.h:
+
+../../../intel-cilk-runtime/runtime/cilk_malloc.h:
+
+../../../intel-cilk-runtime/runtime/full_frame.h:
+
+../../../intel-cilk-runtime/runtime/os_mutex.h:

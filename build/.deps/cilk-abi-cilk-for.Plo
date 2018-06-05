@@ -1,0 +1,117 @@
+cilk-abi-cilk-for.lo: \
+  ../../../intel-cilk-runtime/runtime/cilk-abi-cilk-for.cpp \
+  ../../../intel-cilk-runtime/include/internal/abi.h \
+  ../../../intel-cilk-runtime/include/cilk/common.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/cassert \
+  /usr/include/assert.h /usr/include/features.h \
+  /usr/include/stdc-predef.h /usr/include/sys/cdefs.h \
+  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
+  /usr/include/gnu/stubs-64.h \
+  /home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stdint.h \
+  /usr/include/stdint.h /usr/include/bits/wchar.h \
+  /home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stddef.h \
+  ../../../intel-cilk-runtime/runtime/worker_mutex.h \
+  ../../../intel-cilk-runtime/runtime/rts-common.h \
+  ../../../intel-cilk-runtime/runtime/metacall_impl.h \
+  ../../../intel-cilk-runtime/include/internal/metacall.h \
+  ../../../intel-cilk-runtime/runtime/global_state.h \
+  ../../../intel-cilk-runtime/runtime/frame_malloc.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/cstddef \
+  /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux/bits/c++config.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux/bits/os_defines.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux/bits/cpu_defines.h \
+  ../../../intel-cilk-runtime/runtime/stats.h \
+  ../../../intel-cilk-runtime/runtime/bug.h \
+  ../../../intel-cilk-runtime/runtime/cilk_fiber.h \
+  ../../../intel-cilk-runtime/runtime/cilk-tbb-interop.h \
+  ../../../intel-cilk-runtime/runtime/spin_mutex.h \
+  ../../../intel-cilk-runtime/runtime/cilk_malloc.h \
+  ../../../intel-cilk-runtime/runtime/cilk-abi-cilk-for-numa.cpp \
+  /usr/include/stdio.h /usr/include/bits/types.h \
+  /usr/include/bits/typesizes.h /usr/include/libio.h \
+  /usr/include/_G_config.h /usr/include/wchar.h \
+  /home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stdarg.h \
+  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+  /usr/include/bits/stdio.h
+
+../../../intel-cilk-runtime/include/internal/abi.h:
+
+../../../intel-cilk-runtime/include/cilk/common.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/cassert:
+
+/usr/include/assert.h:
+
+/usr/include/features.h:
+
+/usr/include/stdc-predef.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-64.h:
+
+/home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stdint.h:
+
+/usr/include/stdint.h:
+
+/usr/include/bits/wchar.h:
+
+/home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stddef.h:
+
+../../../intel-cilk-runtime/runtime/worker_mutex.h:
+
+../../../intel-cilk-runtime/runtime/rts-common.h:
+
+../../../intel-cilk-runtime/runtime/metacall_impl.h:
+
+../../../intel-cilk-runtime/include/internal/metacall.h:
+
+../../../intel-cilk-runtime/runtime/global_state.h:
+
+../../../intel-cilk-runtime/runtime/frame_malloc.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/cstddef:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux/bits/c++config.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux/bits/os_defines.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux/bits/cpu_defines.h:
+
+../../../intel-cilk-runtime/runtime/stats.h:
+
+../../../intel-cilk-runtime/runtime/bug.h:
+
+../../../intel-cilk-runtime/runtime/cilk_fiber.h:
+
+../../../intel-cilk-runtime/runtime/cilk-tbb-interop.h:
+
+../../../intel-cilk-runtime/runtime/spin_mutex.h:
+
+../../../intel-cilk-runtime/runtime/cilk_malloc.h:
+
+../../../intel-cilk-runtime/runtime/cilk-abi-cilk-for-numa.cpp:
+
+/usr/include/stdio.h:
+
+/usr/include/bits/types.h:
+
+/usr/include/bits/typesizes.h:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/wchar.h:
+
+/home/jsun/swanModel/jacob/llvm-clang/bin/../lib/clang/3.4.1/include/stdarg.h:
+
+/usr/include/bits/stdio_lim.h:
+
+/usr/include/bits/sys_errlist.h:
+
+/usr/include/bits/stdio.h:

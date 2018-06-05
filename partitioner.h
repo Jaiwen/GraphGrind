@@ -10,36 +10,24 @@
 #include <cstring>
 #include <utility>
 #include <algorithm>
+#include <cilk/cilk.h>
 
+#if NUMA
 #include <numa.h>
 #include <numaif.h>
 static int num_numa_node=numa_num_configured_nodes();
-#define CPU_PARTITION 1 
-#if NUMA
-#if CPU_PARTITION
-#define loop(vname,part,PerNode,code) {                                 \
-      parallel_for_numa( int i=0; i < num_numa_node; ++i ) {            \
-	_Pragma( STRINGIFY(cilk grainsize = _SCAN_BSIZE) ) parallel_for(intT vname=part.vertexstart_of(PerNode*i); vname < part.vertexstart_of(PerNode*(i+1)); ++vname) {  \
-		code;                                                   \
-	}                                                               \
-      }                   						\
+// Copied from Cilk include/internal/abi.h:
+typedef uint64_t cilk64_t;
+typedef void (*__cilk_abi_f64_t)(void *data, cilk64_t low, cilk64_t high);
+
+extern "C" {
+    void __cilkrts_cilk_for_numa_64(__cilk_abi_f64_t body, void *data,
+				    cilk64_t count, int grain);
 }
+
 #else
-#define loop(vname,part,PerNode,code) {                                 \
-      parallel_for_numa( int i=0; i < num_numa_node; ++i ) {            \
-	_Pragma( STRINGIFY(cilk grainsize = _SCAN_BSIZE) ) parallel_for(intT vname=part.start_of(PerNode*i); vname < part.start_of(PerNode*(i+1)); ++vname) {  \
-		code;                                                   \
-	}                                                               \
-      }                   						\
-}
-#endif
-#else //NUMA
-#define loop(vname,part,PerNode,code) {                                 \
-	_Pragma( STRINGIFY(cilk grainsize = _SCAN_BSIZE) ) parallel_for(intT vname=0; vname < part.get_num_elements(); ++vname) {  \
-		code;                                                   \
-      }                   						\
-}
-#endif
+static int num_numa_node = 1;
+#endif // NUMA
 
 #ifndef PARTITION_RANGE
 #define PARTITION_RANGE 1
@@ -302,3 +290,113 @@ struct IsPart
         return part.partition_of(i)==p ? 1 : 0;
     }
 };
+
+
+template<typename Fn>
+struct PartitionOp {
+    const partitioner & part;
+    Fn data;
+
+    PartitionOp( const partitioner & part_, Fn data_ )
+	: part( part_ ), data( data_ ) { }
+
+    static void func(void *data, uint64_t low, uint64_t high) {
+	PartitionOp<Fn> * datap = reinterpret_cast<PartitionOp<Fn> *>( data );
+	intT perNode = datap->part.get_num_per_node_partitions();
+	parallel_for( uint64_t n=low*perNode; n < high*perNode; ++n )
+	    datap->data( n );
+    }
+};
+
+template<typename Fn>
+struct VertexOp {
+    const partitioner & part;
+    Fn data;
+
+    VertexOp( const partitioner & part_, Fn data_ )
+	: part( part_ ), data( data_ ) { }
+
+    static void func(void *data, uint64_t low, uint64_t high) {
+	VertexOp<Fn> * datap = reinterpret_cast<VertexOp<Fn> *>( data );
+	intT perNode = datap->part.get_num_per_node_partitions();
+	intT ps = datap->part.start_of( low * perNode );
+	intT pe = datap->part.start_of( high * perNode );
+#if defined(CILK)
+	_Pragma( STRINGIFY(cilk grainsize = _SCAN_BSIZE) ) parallel_for(
+	    intT v=ps; v < pe; ++v )
+	    datap->data( v );
+#else
+	parallel_for( intT v=ps; v < pe; ++v )
+	    datap->data( v );
+#endif
+    }
+};
+
+
+#if NUMA
+template<typename Fn>
+void map_partitionL( const partitioner & part, Fn fn ) {
+    PartitionOp<Fn> op( part, fn );
+    __cilkrts_cilk_for_numa_64( &PartitionOp<Fn>::func,
+				reinterpret_cast<void *>( &op ),
+				num_numa_node, 1 );
+    
+}
+#define map_partition(vname,part,code)					\
+    {									\
+	map_partitionL( part, [&]( int vname ) { code } );		\
+    }
+#else // not NUMA
+template<typename Fn>
+void map_partitionL( const partitioner & part, Fn fn ) {
+    intT _np = part.get_num_partitions();
+    parallel_for( intT vname=0; vname < _np; ++vname ) {
+	fn( vname );
+    }
+}
+#define map_partition(vname,part,code)					\
+    {									\
+	intT _np = (part).get_num_partitions();				\
+	parallel_for( intT vname=0; vname < _np; ++vname ) {		\
+	    code;							\
+	}								\
+    }
+#endif // NUMA
+
+#if NUMA
+template<typename Fn>
+void map_vertexL( const partitioner & part, Fn fn ) {
+    VertexOp<Fn> op( part, fn );
+    __cilkrts_cilk_for_numa_64( &VertexOp<Fn>::func,
+				reinterpret_cast<void *>( &op ),
+				num_numa_node, 1 );
+    
+}
+#else
+template<typename Fn>
+void map_vertexL( const partitioner & part, Fn fn ) {
+#if defined(CILK)
+    _Pragma( STRINGIFY(cilk grainsize = _SCAN_BSIZE) ) parallel_for(
+	intT v=0; v < part.get_num_elements(); ++v )
+	fn( v );
+#else
+    parallel_for( intT v=0; v < part.get_num_elements(); ++v )
+	fn( v );
+#endif
+}
+#endif
+
+#define map_vertex(vname,part,code) 	 	 	 	 	\
+    do { 	 	 	 			 	 	\
+	map_partition(_p,part, {					\
+		intT _s = part.start_of(_p);				\
+		intT _e = part.start_of(_p+1);				\
+		for( intT _v=_s; _v < _e; ++_v ) {			\
+		    intT vname = _v;					\
+		    code;						\
+		}							\
+	    } );							\
+    } while( 0 )
+
+
+

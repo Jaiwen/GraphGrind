@@ -1,0 +1,211 @@
+Cilkpub README
+
+This readme file is processed by doxygen.  To generate html
+documentation, type "make doc" in the root directory and open
+html/index.html.
+
+
+/**
+ * \mainpage A User-Contributed Library of Cilk Code
+ *
+ * @version 1.05
+ *
+ 
+ * @section motivation Motivation
+ * 
+ * The Cilkpub project aims to facilitate the adoption and use of Cilk
+ * technology by building up a larger base of shared Cilk code.  More
+ * specifically, Cilkpub aims to provide users with a library of
+ * useful Cilk subroutines, as well as provide developers with an
+ * organized avenue for making their own Cilk code available to
+ * others.
+
+ * @section change_log Change Log
+ *
+ * The following updates have been made to Cilkpub:
+ *  - <b>2014-03-13 - [Version 1.05]</b>:
+ *      - Added @ref Scan module, contributed by Arch Robison.
+ *      - C version of scan via macros in scan_c.h
+ *      .
+ *  - <b>2014-02-25 - [Version 1.04]</b>:
+ *      - Added a commutative reducer array to Cilkpub (<tt>creducer_opadd_array</tt>).
+ *      .
+ *  - <b>2013-08-30 - [Version 1.035]</b>:
+ *      - Added the <tt>include_dev</tt> folder for code under development.
+ *      .
+ *  - <b>2013-08-16 - [Version 1.03]</b>:
+ *      - Added @ref VectorReducers module.
+ *      - Modified @ref Pedigrees to compile using ICC v12.1.
+ *      - Minor workaround to compile @ref Sort on Cilkplus Clang.
+ *      .  
+ *  - <b>2013-04-01 - [Version 1.02]</b>:
+ *      - Added @ref Sort module, contributed by Arch Robison.
+ *      - Tweaking Makefiles for Windows compilation and compilation using GCC.
+ *      - Added nested @c internal namespace, some reorganization of files in  @c cilkpub directory.
+ *      - Correcting sample codes to use @c std::printf instead of @c printf.
+ *      - Updating Makefile targets in <tt>test</tt> directory to run a performance test.
+ *      - Adding some scripts for processing performance-test data in <tt>perf_scripts</tt>.
+ *      .
+ *  - <b>2013-03-05 - [Version 1.01]</b>:  
+ *      - Minor updates to documentation for @ref Pedigrees.
+ *      - Changed guard from <tt>__PEDIGREES_H_</tt> to <tt>__CILKPUB_PEDIGREES_H_</tt> in @c pedigrees.h
+ *      - Added sample program for pedigrees (@c sample_fib_pedigrees.cpp).
+ *      - Added sample program for DotMix (@c sample_rand_fib.cpp).
+ *      .
+ *  - <b>2012-12-21 - [Version 1.0] </b>:  Initial version.
+ *  .
+
+ * @section contributing Cilkpub Contributions
+ *
+ * Cilkpub currently contains the following modules:
+ *  - @ref Pedigrees :  Utility classes for manipulating pedigrees.
+ *  - @ref DotMix :     DotMix, a deterministic parallel pseudorandom number generator in Cilk based on pedigrees.
+ *  - @ref Sort :       Routines for parallel sorting.
+ *  - @ref VectorReducers : Reducers That allow the creation of a standard
+ *                          vector by appending elements at the end in parallel.
+ *  - @ref CommutativeReducers : Commutative reducers.
+ *  - @ref Scan : Routines for parallel scan.
+ *  .
+ *
+
+
+ * Cilkpub is intended to be a resource maintained and driven by the
+ * community of Cilk users.  We welcome any Cilk-related
+ * contributions, including but not limited to:
+ *   -  <b>APIs</b>: The interfaces for new modules or methods you'd like to see implemented in Cilk.
+ *   -  <b>Module implementations</b>: Implementations of new modules.
+ *   -  <b>Bug fixes</b>: Fixes for bugs in implementation or documentation.
+ *   -  <b>Regression tests</b>: Test cases for checking correctness.
+ *   -  <b>Performance tests</b>: Test cases for benchmarking performance.
+ *   -  <b>Example programs</b>: Example programs that illustrate the use of Cilk.
+ *   -  <b>Other miscellaneous resources</b>: Any other tools, scripts, etc. that might help out a Cilk user.
+ *
+ *
+ 
+ * Cilkpub is not a commercial product, and thus relies on community
+ * efforts for addition and maintainance of any contributed code.
+ * Contributions should be submitted through the <a
+ * href=http://cilkplus.org/submit-cilk-contribution>contribution
+ * page</a> on the Cilk Plus website.
+
+
+ * @section contrib_guidelines Guidelines for New Contributions
+
+ * Please provide the following information with the contribution of
+ * each new module:
+ *  - <b>Brief description</b>:  A description of the module's functionality.
+ *  - <b>Contributors</b>: Entities to credit for the contribution.  This field may be displayed in on the "contributor" field on the website.
+ *  - <b>Contact Info</b>: Contact information, where we can reach you.  This information may be documented in changelogs, in case there are questions concerning the submission that arise in the future.
+ *  - <b>Source files</b>: An archive file containing the sources.
+
+ *
+
+ * For each new module, please indicate any 
+ *  - <b>External dependencies</b>: Indicate any dependencies on external libraries or other software
+ *  - <b>Platform requirements</b>: Indicate any requirements on compiler, platform, etc. that are needed for this module.
+ *  - <b>Platforms tested</b>: List which platforms (OS, architecture), that the code has been tested on.
+ *  - <b>Known issues</b>: List any known issues or limitations.
+ *
+ 
+ *
+ * In general, we do not require any particular organization for
+ * code submissions.  To improve compatibility between different
+ * Cilkpub contributions, however, we suggest the following
+ * structure:
+ *  - <b>Namespace</b>:  Library functions are C++ code belonging to the <tt>cilkpub</tt> namespace.
+ *  - <b>Header files</b>: Header files are added to <tt>cilkpub/include</tt>
+ *  - <b>Documentation</b>: All header files are annotated and processed using doxygen.  Run <tt>make doc</tt> at top-level to generate documentation.
+ *  - <b>Implementation</b>: Implementation of header-only libraries are added to <tt>cilkpub/include/internal</tt>.   Implementation of other libraries are added to <tt>cilkpub/src</tt>.
+ *  - <b>Regression tests</b>: A regression test for each module is added to <tt>cilkpub/test</tt>.   
+ *  - <b>Performance tests</b>: A performance test for each module is added to <tt>cilkpub/test</tt>. (A test might double as both a regression and performance test.)
+ *  - <b>Other files</b>: Add other resource files to <tt>cilkpub/misc</tt> or in appropriately named directories in <tt>cilkpub</tt>.
+ *  .
+ *
+ * Finally, please document any missing or incomplete items in the code submission in a TODO/Wishlist for each module.
+
+ * To submit a modification to an existing module, please provide a
+ * brief description of the change, and document any of the relevant
+ * categories described above that may be affected.
+
+
+ 
+ 
+ * @section regression_testing Regression Testing in Cilkpub
+ *
+ * Cilkpub currently uses a simple organization for tests.  Existing test cases in Cilkpub have the following format:
+ *  - Tests use the infrastructure in cilktest_harness.h for asserts and message reporting.
+ *  - Each regression test has names in the format <tt>test_<module_name>_<desc>.cpp</tt>.
+ *  - Each regression test takes as a single integer argument that controls the verbosity of message printing.
+ *    The default verbosity level is 2.  At verbosity level 0, no output is  printed.
+
+
+ * @section perf_testing Performance Testing
+ *
+ 
+ * Cilkpub has some simple Makefile targets in the <tt>test</tt>
+ * directory for running tests.
+ *
+ *  - Like a regression test, each performance test is assumed to be of the form <tt>test_<module_name>_<desc>.cpp</tt>.
+ *  - Each performance test takes in two integer arguments: the first is the verbosity, and the second is the performance
+ *    test level (assumed to be 1 for now).
+ *  - Each performance test should print out benchmark data in the
+ *    format prescribed by <tt>CILKPUB_PERF_REPORT_TIME</tt> method in <tt>test/cilktest_harness.h</tt>.  
+ *    This format assumes each data point is a CSV string with 6 fields:
+ *     @code  CILKPUB_DATA_POINT, <Time>, <P>, <Test Name>, [<Input Params>], [<Output Data>]  @endcode
+ *    For example, a performance test program might print out:
+ *     @code CILKPUB_DATA_POINT, 130.12, 8, foo, [100000, 4], [foo_data, 2] @endcode
+ *        - This data point indicates that the program ran in 130.12 ms, with 8 worker threads.  
+ *        - The <tt>Input Params</tt> and <tt>Output Data</tt> fields are enclosed in brackets because they can themselves be comma-separated
+ *    lists.   
+ *        - The <tt>Test Name</tt>, <tt>Input Params</tt>, and <tt>P</tt> fields together form a <i>key</i> for this data point.  
+*           Performance-testing scripts may choose to average all data points that have the same
+ *          key, and calculate speedups for all data points whose keys differ only in their value of <tt>P</tt>.
+ *        - The <tt>Output Data</tt> field contains data collected from this run.
+ *        .
+ *  - Each data point should be printed on a separate line.
+ *  .
+ *
+
+ * The <tt>perf_scripts</tt> directory contains some simple Python
+ * scripts for processing performance data. Currently, it contains the following scripts:
+ * - <tt>perf_summarize_file.py</tt>: Computes an output data file
+ *    containing the average or min of all data points in a file
+      containing the same key.
+ * - <tt>perf_diff_files.py</tt>: Computes a percent difference
+ *    between two data files.
+ * - <tt>perf_speedup_plot.py</tt>: Generates a gnuplot script that
+ *    shows a speedup plots of one or more files of data.
+ * .
+
+
+ * @section contact_info Contact Information
+ *
+ * Please use the <a href=http://software.intel.com/en-us/forums/intel-cilk-plus>Intel
+ * Cilk Plus forum</a> for any public discussion of Cilkpub.
+ *
+ * For all other Cilkpub-related inquiries, contact jim.sukha@intel.com.
+ *
+
+ *
+ * @section global_todo  TODO/Wishlist
+ *
+ *
+ 
+ * Cilkpub is an evolving project.  Here are some items we could use
+ * additional help with.
+ *
+ * @todo The performance-testing infrastructure needs quite a bit of work.
+ * @todo Add more modules! :)
+ *  
+
+ *
+ * @section acknowledgements  Acknowledgements
+ *
+ * Thanks to the following groups and individuals, who have contributed to Cilkpub. 
+ * - The Intel Cilk Plus runtime team for helping organize the initial release of Cilkpub.
+ * - Tao B. Schardl for help in development of the @ref DotMix.
+ * - Arch Robison for contributing the @ref Sort and @ref Scan modules.
+ * - Neil Faiman for contributing the @ref VectorReducers module.
+ * .
+ */
+

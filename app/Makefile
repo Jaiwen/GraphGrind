@@ -2,7 +2,7 @@
 INTT = -DLONG 
 PCC = /var/shared/gcc-7.3.0/bin/g++
 #PCC = icc
-PCFLAGS = -fcilkplus -lcilkrts -O3 -DCILK=1 $(INTT) $(INTE) -I ./cilk-swan/include -L ./cilk-swan/lib -ldl  
+PCFLAGS = -fcilkplus -lcilkrts -O3 -DCILK=1 $(INTT) $(INTE) -I ../cilk-swan/include -L ../cilk-swan/lib -ldl  
 COMMON=papi_code.h utils.h IO.h parallel.h gettime.h quickSort.h parseCommandLine.h mm.h partitioner.h graph-numa.h ligra-numa.h
 
 ALL= BFS BC Components PageRank PageRankDelta BellmanFord SPMV BP PageRankBit PageRankConverage
@@ -27,6 +27,9 @@ REUSEOPT += -DREUSE_DIST=0
 
 % : %.C $(COMMON)
 	$(PCC) $(PCFLAGS) $(CFLAGS) $(NUMAOPT) $(CLIDOPT) $(SEQOPT) $(OPT) $(CACHEOPT) -o $@ $< $(LIBS_I_NEED)
+
+$(COMMON):
+	ln -s ../graphgrind/$@ .
 
 .PHONY : clean
 

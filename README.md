@@ -102,6 +102,8 @@ SPMV.C (Sparse Matrix-vector Mulplication,need weighted graph).
 
 Publications:
 -----------
-1) Sun, Jiawen, Hans Vandierendonck, and Dimitrios S. Nikolopoulos. "GraphGrind: addressing load imbalance of graph partitioning." Proceedings of the International Conference on Supercomputing (ICS’17). ACM, 2017. 
+1) Sun, Jiawen, Hans Vandierendonck, and Dimitrios S. Nikolopoulos. "GraphGrind: addressing load imbalance of graph partitioning." Proceedings of the International Conference on Supercomputing (ICS’17). ACM, 2017. https://doi.org/10.1145/3079079.3079097
 
-2) Sun, Jiawen, Hans Vandierendonck, and Dimitrios S. Nikolopoulos. "Accelerating Graph Analytics by Utilising the Memory Locality of Graph Partitioning." Parallel Processing (ICPP’17), 2017 46th International Conference on. IEEE, 2017. 
+2) Sun, Jiawen, Hans Vandierendonck, and Dimitrios S. Nikolopoulos. "Accelerating Graph Analytics by Utilising the Memory Locality of Graph Partitioning." Parallel Processing (ICPP’17), 2017 46th International Conference on. IEEE, 2017.  https://doi.org/10.1109/ICPP.2017.27
+
+3) un, Jiawen, Hans Vandierendonck, and Dimitrios S. Nikolopoulos. 2019. VEBO: a vertex- and edge-balanced ordering heuristic to load balance parallel graph processing. In Proceedings of the 24th Symposium on Principles and Practice of Parallel Programming (PPoPP '19). Association for Computing Machinery, New York, NY, USA, 391–392. https://doi.org/10.1145/3293883.3295703
